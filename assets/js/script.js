@@ -27,11 +27,33 @@ async function pickMovie(categoryInput) {
 
   console.log(dataMovie);
 
-//   for (let i = 0; i < dataMovie.results.length; i++) {
+  let randomMovieIndex = Math.floor(Math.random() * dataMovie.results.length);
 
+  console.log(randomMovieIndex);
+  console.log(dataMovie.results[randomMovieIndex].title);
+  console.log(dataMovie.results[randomMovieIndex].overview);
 
-  //}
+  let movieTitle = dataMovie.results[randomMovieIndex].title;
+  let movieOverview = dataMovie.results[randomMovieIndex].overview;
+
+  let moviePosterPath = dataMovie.results[randomMovieIndex].poster_path;
+  let posterURL = "https://image.tmdb.org/t/p/original/" + moviePosterPath;
+
+  
+  const movieCardDiv = $("<div>").attr("style", "width: 18rem;");
+  const posterImage = $("<img>").addClass("card-img-top").attr("src", posterURL);
+  const movieCardBodyDiv = $("<div>").addClass("card-body py-3");
+  const movieTitleEl = $("<h4>").addClass("card-title").text(movieTitle);
+  const movieOverviewEl = $("<p>").addClass("card-text").text(movieOverview);
+
+  movieCardBodyDiv.append(movieTitleEl, movieOverviewEl);
+  movieCardDiv.append(posterImage, movieCardBodyDiv);
+
+  $("body").append(movieCardDiv)
+
 }
+
+pickMovie("Romance"); //to test
 
 $("#selectionSection").on("click", ".btn", function (e) {
   e.preventDefault();
