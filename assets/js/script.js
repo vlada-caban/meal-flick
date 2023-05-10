@@ -14,11 +14,14 @@
 
 //Saeeda section
 const mealElement = document.getElementById('generatedMeal')
+let mealName
+let localStorageData = JSON.parse(
+    localStorage.getItem("movieMealData"))
 fetch('https://www.themealdb.com/api/json/v1/1/random.php')
   .then(response => response.json())
   .then(data => {
     const meal = data.meals[0];
-    const mealName = meal.strMeal;
+    mealName = meal.strMeal;
     const mealPicture = meal.strMealThumb;
     const mealSource = meal.strSource;
     // console.log(`Meal Name: ${mealName}`);
@@ -32,15 +35,14 @@ fetch('https://www.themealdb.com/api/json/v1/1/random.php')
   })
   .catch(error => console.error(error));
 
+function setLocalStorage(movieTitle, mealName, today) {
+  const mealFlickData =
+   {movie: movieTitle, 
+    meal: mealName, 
+    date: today}
 
-// async function getData()
-// {
-//     let response = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
-//     let data = response.json()
-//      return data;
-// }
-// getData()
-// .then(data => console.log(data));
+ localStorage.setItem() 
+}
 
 
 
