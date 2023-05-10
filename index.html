@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,122 +10,86 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Meal Flick</title>
 </head>
+
 <body>
     <!-- Delia work here -->
-    <div class = "container">
-        <div class = "movie-search">
-        <div class = "meal-search">
+   
+            <!-- Title of project -->
+            <main>
+                <section id="welcomeTitle">
+                    <h1> Welcome to MealFlick </h1>
+                    <div>
+                        <p>Please select what kind of evening you are in the mood for and we will recommend movie and a
+                            meal to go with it.
+                        </p>
 
-</div>
-<!-- Title of project -->
-<main>
-    <section id = "welcomeTitle">
-        <h1> Welcome to MealFlick </h1>
-        <div>
-            <p>Please select what kind of evening you are in the mood for and we will recommend movie and a meal to go with it.
-            </p>
+                    </div>
+                </section>
 
-        </div>
-    </section>
-<!-- Created selections for movie and dinner with images -->
-    <section id="selectionsSection">
-        <div class="card-group">
-            <div class="card">
-            <img src="./assets/images/dinnerdate.png" class="card-img-top" alt="couple toasting">
-            <div class="card-body">
-                <h5 class="card-title">Romance</h5>
-                <p class="card-text">What s?</p>
-            </div>
-            <div class="card-footer">
-                <a id="romanceBtn" class="btn btn-primary">Romance</a>
-            </div>
-            </div>
-            <div class="card">
-            <img src="./assets/images/fundatedinner.png" class="card-img-top" alt="Couple watching a movie">
-            <div class="card-body">
-                <h5 class="card-title">Fun</h5>
-                <p class="card-text">what do you want this image to say?</p>
-            </div>
-            <div class="card-footer">
-                <a id="funBtn" class="btn btn-primary">Fun</a>
-            </div>
-            </div>
-            <div class="card">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Thrilling</h5>
-                <p class="card-text">What should this image say?</p>
-            </div>
-            <div class="card-footer">
-                <a id="thrillBtn" class="btn btn-primary">Thrilling</a>
-            </div>
+                <!-- Created selections for movie and dinner with images -->
+                <section id="selectionsSection">
+                    <div class="card-group">
+                        <div class="card">
+                            <img src="./assets/images/dinnerdate.png" class="card-img-top" alt="couple toasting">
+                            <div class="card-body">
+                                <h5 class="card-title">Romance</h5>
+                                <p class="card-text">What s?</p>
+                            </div>
+                            <div class="card-footer">
+                                <a id="romanceBtn" class="btn btn-primary">Romance</a>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img src="./assets/images/fundatedinner.png" class="card-img-top"
+                                alt="Couple watching a movie">
+                            <div class="card-body">
+                                <h5 class="card-title">Fun</h5>
+                                <p class="card-text">what do you want this image to say?</p>
+                            </div>
+                            <div class="card-footer">
+                                <a id="funBtn" class="btn btn-primary">Fun</a>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img src="..." class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Thrilling</h5>
+                                <p class="card-text">What should this image say?</p>
+                            </div>
+                            <div class="card-footer">
+                                <a id="thrillBtn" class="btn btn-primary">Thrilling</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-    </section>
-<!-- added the history section -->
-    <section id="historySection">
-        <h2 class="h2">Saved History:</h2>
+                <!-- added the history section -->
+                <section id="historySection">
+                    <h2 class="h2">Saved History:</h2>
+                </section>
 
+                <section id="genteratedPage">
+                    <h1> Generated Page Movie + meal </h1>
+                    <div>
+                        <button id="goBack">GO BACK</button>
 
-
-
-
-        
-    
-
-
-
-
-
-
-
-
+                        <section id="detailsHeaders">
+                            <button id="genteratedMovieMeals"></button>
+                        </section>
+                    </div>
+                </section>
 
 
+            </main>
 
-
-
-
-
-
-
-
-
-
-            </div>
-    </section>
-
-</main>
-
-
-
-
-
-
-
-
-
-
-
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
-        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
-        integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
-    <script src="./assets/js/script.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+                integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+                integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
+            <script src="./assets/js/script.js"></script>
 </body>
+
 </html>
-
-<main>
-    <section id = "genteratedPage">
-        <h1> Generated Page Movie + meal </h1>
-        <div>
-            <button id="goBack">GO BACK</button>
-
-        <section id="detailsHeaders">
-            <button id="genteratedMovieMeals"></button>
-        </section>
-        <div>
-
-
