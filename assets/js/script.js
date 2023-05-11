@@ -14,6 +14,47 @@ $(function () {
 
   const today = dayjs().format("MMMM D, YYYY");
 
+  //function to render data from local storage to the page
+  function renderFromStorage() {
+    if (localStorageData !== null) {
+      let movieTitleToRender;
+      let mealToRender;
+      const historyHeader = $("<h3>").text("Saved History:");
+      const historyTable = $("<table>").addClass("table table-striped");
+      const tableHeader = $("<thead>");
+      const tableTr = $("<tr>");
+      const tableTh1 = $("<th>").attr("scope", "col").text("Date");
+      const tableTh2 = $("<th>").attr("scope", "col").text("Movie");
+      const tableTh3 = $("<th>").attr("scope", "col").text("Meal");
+      const tableBody = $("<tbody>");
+
+      tableTr.append(tableTh1, tableTh2, tableTh3);
+      tableHeader.append(tableTr);
+      historyTable.append(tableHeader);
+
+      for (let i = 0; i < localStorageData.length; i++) {
+        movieTitleToRender = localStorageData[i].movie;
+        mealToRender = localStorageData[i].meal;
+        dateToRender = localStorageData[i].date;
+
+        // console.log(movieTitleToRender);
+        // console.log(mealToRender);
+        // console.log(dateToRender);
+        let entryTr = $("<tr>");
+        let entryTd1 = $("<td>").text(dateToRender);
+        let entryTd2 = $("<td>").text(movieTitleToRender);
+        let entryTd3 = $("<td>").text(mealToRender);
+        entryTr.append(entryTd1, entryTd2, entryTd3);
+        tableBody.append(entryTr);
+
+      }
+      historyTable.append(tableBody);
+      $("#historySection").append(historyHeader, historyTable);
+    }
+  }
+
+  renderFromStorage();
+
   //function to clear everything from homepage and generate header of generated movie/meal page
   function switchToGeneratedPage() {
     $("#welcomeTitle").addClass("hide-content");
