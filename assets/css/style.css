@@ -30,7 +30,8 @@ p {
   }
   
   .card-img-top {
-    height: 250px;
+    height: 100%;
+    max-width: 100%;
     object-fit: cover;
   }
   
