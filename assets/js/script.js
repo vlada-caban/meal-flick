@@ -55,7 +55,9 @@ $(function () {
     const moviePosterPath = dataMovie.results[randomMovieIndex].poster_path;
     const posterURL = "https://image.tmdb.org/t/p/original/" + moviePosterPath;
 
-    const movieCardDiv = $("<div>").attr("style", "width: 20rem;");
+    const movieCardDiv = $("<div>")
+      .attr("style", "width: 20rem;")
+      .addClass("card");
     const posterImage = $("<img>")
       .addClass("card-img-top")
       .attr("src", posterURL);
@@ -68,7 +70,7 @@ $(function () {
     movieCardBodyDiv.append(movieTitleEl, movieOverviewEl);
     movieCardDiv.append(posterImage, movieCardBodyDiv);
 
-    $("#genteratedPage").append(movieCardDiv); //need to append to $("#generatedMovieMeal") section
+    $("#generatedPage").append(movieCardDiv); //need to append to $("#generatedMovieMeal") section
   }
 
   $("#selectionsSection").on("click", ".btn", function (e) {
@@ -91,19 +93,21 @@ $(function () {
         const mealPicture = meal.strMealThumb;
         const mealSource = meal.strSource;
 
-        const mealCardDiv = $("<div>").attr("style", "width: 20rem;");
+        const mealCardDiv = $("<div>").attr("style", "width: 20rem;").addClass("card");
         const mealImage = $("<img>")
           .addClass("card-img-top")
           .attr("src", mealPicture);
         const mealCardBodyDiv = $("<div>").addClass("card-body py-3");
         const mealTitleEl = $("<h4>").addClass("card-title").text(mealName);
+        const mealParagraphEl = $("<p>").text("Follow the link for full recipe:");
         const mealSourceEl = $("<a>")
           .attr("href", mealSource)
-          .attr("target", "blank");
+          .attr("target", "blank")
+          .text(mealSource);
 
-        mealCardBodyDiv.append(mealTitleEl, mealSourceEl);
+        mealCardBodyDiv.append(mealTitleEl, mealParagraphEl, mealSourceEl);
         mealCardDiv.append(mealImage, mealCardBodyDiv);
-        $("#genteratedPage").append(mealCardDiv);
+        $("#generatedPage").append(mealCardDiv);
         // console.log(`Meal Name: ${mealName}`);
         // console.log(`Meal Picture: ${mealPicture}`);
         // console.log(`Meal Source: ${mealSource}`);
