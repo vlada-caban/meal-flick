@@ -25,7 +25,7 @@ $(function () {
     if (localStorageData !== null) {
       let movieTitleToRender;
       let mealToRender;
-      const historyHeader = $("<h3>").text("Saved History:");
+      const historyHeader = $("<h3>").text("Saved History:").addClass("my-3");
       const historyTable = $("<table>").addClass("table table-striped");
       const tableHeader = $("<thead>");
       const tableTr = $("<tr>");
