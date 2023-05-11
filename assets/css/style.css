@@ -5,3 +5,51 @@
 .show-content {
     display: contents;
 }
+
+body {
+    background-color: #bcb8b1;
+}
+
+h1 {
+    text-align: center;
+    color: #463f3a;
+}
+
+p {
+    text-align: center;
+    color: #463f3a;
+}
+
+.card {
+    margin: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 15px;
+    overflow: hidden;
+    object-fit: cover;
+  }
+  
+  .card-img-top {
+    height: 250px;
+    object-fit: cover;
+  }
+  
+  .card-footer {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .btn {
+    margin: 10px;
+  }
+
+  .btn-primary {
+    background-color: #463f3a;
+  }
+
+  .card-body {
+    background-color: #eee4e1;
+  }
+
+  .card-footer {
+    background-color: #eee4e1;
+  }
