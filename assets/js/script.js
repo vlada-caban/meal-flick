@@ -3,8 +3,8 @@ $(function () {
   const apiKeyMovie = "de64b49a91aea6e33566a226b9f72713";
   const movieURL = "https://api.themoviedb.org/3/discover/movie?";
 
-  let mealName = "";
-  let movieTitle = "";
+  let mealName;
+  let movieTitle;
   let localStorageData = JSON.parse(localStorage.getItem("movieMealData"));
 
   const saveBtn = $("<button>").addClass("btn btn-success m-2").text("Save");
@@ -12,17 +12,75 @@ $(function () {
     .addClass("btn btn-secondary m-2")
     .text("Re-Generate");
 
-  const today = dayjs();
+  const today = dayjs().format("MMMM D, YYYY");
 
-  //function to clear everything from homepage
-  function clearHomePage() {
+  //function to render data from local storage to the page
+  function renderFromStorage() {
+    if (localStorageData !== null) {
+      let movieTitleToRender;
+      let mealToRender;
+      const historyHeader = $("<h3>").text("Saved History:");
+      const historyTable = $("<table>").addClass("table table-striped");
+      const tableHeader = $("<thead>");
+      const tableTr = $("<tr>");
+      const tableTh1 = $("<th>").attr("scope", "col").text("Date");
+      const tableTh2 = $("<th>").attr("scope", "col").text("Movie");
+      const tableTh3 = $("<th>").attr("scope", "col").text("Meal");
+      const tableBody = $("<tbody>");
+
+      tableTr.append(tableTh1, tableTh2, tableTh3);
+      tableHeader.append(tableTr);
+      historyTable.append(tableHeader);
+
+      for (let i = 0; i < localStorageData.length; i++) {
+        movieTitleToRender = localStorageData[i].movie;
+        mealToRender = localStorageData[i].meal;
+        dateToRender = localStorageData[i].date;
+
+        // console.log(movieTitleToRender);
+        // console.log(mealToRender);
+        // console.log(dateToRender);
+        let entryTr = $("<tr>");
+        let entryTd1 = $("<td>").text(dateToRender);
+        let entryTd2 = $("<td>").text(movieTitleToRender);
+        let entryTd3 = $("<td>").text(mealToRender);
+        entryTr.append(entryTd1, entryTd2, entryTd3);
+        tableBody.append(entryTr);
+
+      }
+      historyTable.append(tableBody);
+      $("#historySection").append(historyHeader, historyTable);
+    }
+  }
+
+  renderFromStorage();
+
+  //function to clear everything from homepage and generate header of generated movie/meal page
+  function switchToGeneratedPage() {
     $("#welcomeTitle").addClass("hide-content");
     $("#selectionsSection").addClass("hide-content");
     $("#historySection").addClass("hide-content");
+
+    const headerDiv = $("<div>").addClass("container");
+    const goBackBtn = $("<button>")
+      .addClass("btn btn-secondary")
+      .text("Go Back")
+      .attr("id", "goBack");
+    const generatedTitle = $("<h2>").text(
+      "Here are your Movie and Meal pick. Enjoy!"
+    );
+    const todayEl = $("<p>").text("Today: " + today);
+
+    headerDiv.append(goBackBtn, generatedTitle, todayEl);
+    $("#generatedPage").append(headerDiv);
+
+    goBackBtn.on("click", function () {
+      location.reload();
+    });
   }
 
   // function to fetch a movie
-  async function pickMovie(categoryInput) {
+  function pickMovie(categoryInput) {
     let selectedCategoryID = 0;
 
     if (categoryInput === "Romance") {
@@ -33,53 +91,60 @@ $(function () {
       selectedCategoryID = 53; //id for category Thriller
     }
 
-    const responseMovie = await fetch(
+    fetch(
       movieURL +
         "api_key=" +
         apiKeyMovie +
         "&language=en-US&sort_by=popularity.desc&page=1&with_genres=" +
         selectedCategoryID
-    );
+    )
+      .then((responseMovie) => responseMovie.json())
+      .then((dataMovie) => {
+        console.log(dataMovie);
 
-    const dataMovie = await responseMovie.json();
+        const randomMovieIndex = Math.floor(
+          Math.random() * dataMovie.results.length
+        );
 
-    console.log(dataMovie);
+        movieTitle = dataMovie.results[randomMovieIndex].title;
+        const movieOverview = dataMovie.results[randomMovieIndex].overview;
 
-    const randomMovieIndex = Math.floor(
-      Math.random() * dataMovie.results.length
-    );
+        const moviePosterPath = dataMovie.results[randomMovieIndex].poster_path;
+        const posterURL =
+          "https://image.tmdb.org/t/p/original/" + moviePosterPath;
 
-    movieTitle = dataMovie.results[randomMovieIndex].title;
-    const movieOverview = dataMovie.results[randomMovieIndex].overview;
+        const movieCardDiv = $("<div>")
+          .attr("style", "width: 20rem;")
+          .addClass("card");
+        const posterImage = $("<img>")
+          .addClass("card-img-top")
+          .attr("src", posterURL);
+        const movieCardBodyDiv = $("<div>").addClass("card-body py-3");
+        const movieTitleEl = $("<h4>").addClass("card-title").text(movieTitle);
+        const movieOverviewEl = $("<p>")
+          .addClass("card-text py-2")
+          .text(movieOverview);
 
-    const moviePosterPath = dataMovie.results[randomMovieIndex].poster_path;
-    const posterURL = "https://image.tmdb.org/t/p/original/" + moviePosterPath;
+        movieCardBodyDiv.append(movieTitleEl, movieOverviewEl);
+        movieCardDiv.append(posterImage, movieCardBodyDiv);
 
-    const movieCardDiv = $("<div>")
-      .attr("style", "width: 20rem;")
-      .addClass("card");
-    const posterImage = $("<img>")
-      .addClass("card-img-top")
-      .attr("src", posterURL);
-    const movieCardBodyDiv = $("<div>").addClass("card-body py-3");
-    const movieTitleEl = $("<h4>").addClass("card-title").text(movieTitle);
-    const movieOverviewEl = $("<p>")
-      .addClass("card-text py-2")
-      .text(movieOverview);
-
-    movieCardBodyDiv.append(movieTitleEl, movieOverviewEl);
-    movieCardDiv.append(posterImage, movieCardBodyDiv);
-
-    $("#generatedPage").append(movieCardDiv); //need to append to $("#generatedMovieMeal") section
+        $("#generatedPage").append(movieCardDiv);
+      })
+      .catch((error) => console.error(error));
   }
 
   $("#selectionsSection").on("click", ".btn", function (e) {
     e.preventDefault();
     const categoryClicked = e.target.innerHTML;
-    clearHomePage();
+    //clearHomePage();
+    //renderGeneratedPage();
+    switchToGeneratedPage();
     pickMovie(categoryClicked);
     pickMeal();
-    //need to add function name that fetches recipes
+    $("#generatedPage").append(saveBtn);
+    saveBtn.on("click", function () {
+      setLocalStorage();
+    });
   });
 
   //Saeeda section
@@ -93,13 +158,17 @@ $(function () {
         const mealPicture = meal.strMealThumb;
         const mealSource = meal.strSource;
 
-        const mealCardDiv = $("<div>").attr("style", "width: 20rem;").addClass("card");
+        const mealCardDiv = $("<div>")
+          .attr("style", "width: 20rem;")
+          .addClass("card");
         const mealImage = $("<img>")
           .addClass("card-img-top")
           .attr("src", mealPicture);
         const mealCardBodyDiv = $("<div>").addClass("card-body py-3");
         const mealTitleEl = $("<h4>").addClass("card-title").text(mealName);
-        const mealParagraphEl = $("<p>").text("Follow the link for full recipe:");
+        const mealParagraphEl = $("<p>").text(
+          "Follow the link for full recipe:"
+        );
         const mealSourceEl = $("<a>")
           .attr("href", mealSource)
           .attr("target", "blank")
@@ -108,20 +177,23 @@ $(function () {
         mealCardBodyDiv.append(mealTitleEl, mealParagraphEl, mealSourceEl);
         mealCardDiv.append(mealImage, mealCardBodyDiv);
         $("#generatedPage").append(mealCardDiv);
-        // console.log(`Meal Name: ${mealName}`);
-        // console.log(`Meal Picture: ${mealPicture}`);
-        // console.log(`Meal Source: ${mealSource}`);
-        //  mealElement.innerHTML = `
-        //  <h2>mealName</h2>
-        //  <img src="mealPicture}" alt="mealName}" width="400" height="300">
-        //  <p>Source: <a href="mealSource}" target="_blank">mealSource}</a></p>
       })
       .catch((error) => console.error(error));
   }
 
-  function setLocalStorage(movieTitle, mealName, today) {
-    const mealFlickData = { movie: movieTitle, meal: mealName, date: today };
+  function setLocalStorage() {
+    const mealFlickData = {
+      movie: movieTitle,
+      meal: mealName,
+      date: today,
+    };
 
-    localStorage.setItem();
+    if (localStorageData === null) {
+      localStorageData = [];
+      localStorageData.push(mealFlickData);
+    } else {
+      localStorageData.push(mealFlickData);
+    }
+    localStorage.setItem("movieMealData", JSON.stringify(localStorageData));
   }
 });
