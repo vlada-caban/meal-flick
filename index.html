@@ -15,14 +15,12 @@
     <!-- Delia work here -->
 
     <!-- Title of project -->
-
     <section id="welcomeTitle">
         <h1> Welcome to MealFlick </h1>
         <div>
             <p>Please select what kind of evening you are in the mood for and we will recommend movie and a
                 meal to go with it.
             </p>
-
         </div>
     </section>
 
@@ -65,20 +63,32 @@
 
     <!-- added the history section -->
     <section id="historySection">
-        <!-- <h2 class="h2">Saved History:</h2> -->
+        <!-- dynamically generated -->
     </section>
 
+    <!-- generated page section -->
     <section id="generatedPage">
-        <!-- <h1> Generated Page Movie + meal </h1>
-        <div>
-            <button id="goBack">GO BACK</button>
-
-            <section id="detailsHeaders">
-                <button id="genteratedMovieMeals"></button>
-            </section>
-        </div> -->
+        <!-- dynamically generated -->
     </section>
 
+    <!-- Modal to confirm save-->
+    <div class="modal fade" id="saveConfirmation" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Please confirm to save</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Confirm to save to the library!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="confirmSave">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"

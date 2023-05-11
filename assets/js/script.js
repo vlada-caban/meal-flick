@@ -7,7 +7,13 @@ $(function () {
   let movieTitle;
   let localStorageData = JSON.parse(localStorage.getItem("movieMealData"));
 
-  const saveBtn = $("<button>").addClass("btn btn-success m-2").text("Save");
+  const saveBtn = $("<button>")
+    .addClass("btn btn-success m-2")
+    .text("Save")
+    .attr("type", "button")
+    .attr("data-bs-toggle", "modal")
+    .attr("data-bs-target", "#saveConfirmation");
+
   const regenerateBtn = $("<button>")
     .addClass("btn btn-secondary m-2")
     .text("Re-Generate");
@@ -19,7 +25,7 @@ $(function () {
     if (localStorageData !== null) {
       let movieTitleToRender;
       let mealToRender;
-      const historyHeader = $("<h3>").text("Saved History:");
+      const historyHeader = $("<h3>").text("Saved History:").addClass("my-3");
       const historyTable = $("<table>").addClass("table table-striped");
       const tableHeader = $("<thead>");
       const tableTr = $("<tr>");
@@ -143,7 +149,11 @@ $(function () {
     pickMeal();
     $("#generatedPage").append(saveBtn);
     saveBtn.on("click", function () {
-      setLocalStorage();
+      $("#confirmSave").on("click", function() {
+        setLocalStorage();
+        // $("#saveConfirmation").attr("data-bs-dismiss", "modal");
+        $("#saveConfirmation").modal("toggle");
+      })
     });
   });
 
