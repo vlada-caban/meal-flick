@@ -3,6 +3,12 @@ $(function () {
   const apiKeyMovie = "de64b49a91aea6e33566a226b9f72713";
   const movieURL = "https://api.themoviedb.org/3/discover/movie?";
 
+  const movieMealDiv = $("<div>").addClass("card-group").attr("id", "movieMeal");
+  const movieCardDiv = $("<div>").addClass("card");
+  const mealCardDiv = $("<div>").addClass("card");
+
+    // .attr("style", "width: 100rem;")
+
   let mealName;
   let movieTitle;
   let localStorageData = JSON.parse(localStorage.getItem("movieMealData"));
@@ -52,7 +58,6 @@ $(function () {
         let entryTd3 = $("<td>").text(mealToRender);
         entryTr.append(entryTd1, entryTd2, entryTd3);
         tableBody.append(entryTr);
-
       }
       historyTable.append(tableBody);
       $("#historySection").append(historyHeader, historyTable);
@@ -119,9 +124,6 @@ $(function () {
         const posterURL =
           "https://image.tmdb.org/t/p/original/" + moviePosterPath;
 
-        const movieCardDiv = $("<div>")
-          .attr("style", "width: 20rem;")
-          .addClass("card");
         const posterImage = $("<img>")
           .addClass("card-img-top")
           .attr("src", posterURL);
@@ -134,28 +136,10 @@ $(function () {
         movieCardBodyDiv.append(movieTitleEl, movieOverviewEl);
         movieCardDiv.append(posterImage, movieCardBodyDiv);
 
-        $("#generatedPage").append(movieCardDiv);
+        // $("#generatedPage").append(movieCardDiv);
       })
       .catch((error) => console.error(error));
   }
-
-  $("#selectionsSection").on("click", ".btn", function (e) {
-    e.preventDefault();
-    const categoryClicked = e.target.innerHTML;
-    //clearHomePage();
-    //renderGeneratedPage();
-    switchToGeneratedPage();
-    pickMovie(categoryClicked);
-    pickMeal();
-    $("#generatedPage").append(saveBtn);
-    saveBtn.on("click", function () {
-      $("#confirmSave").on("click", function() {
-        setLocalStorage();
-        // $("#saveConfirmation").attr("data-bs-dismiss", "modal");
-        $("#saveConfirmation").modal("toggle");
-      })
-    });
-  });
 
   //Saeeda section
 
@@ -168,9 +152,6 @@ $(function () {
         const mealPicture = meal.strMealThumb;
         const mealSource = meal.strSource;
 
-        const mealCardDiv = $("<div>")
-          .attr("style", "width: 20rem;")
-          .addClass("card");
         const mealImage = $("<img>")
           .addClass("card-img-top")
           .attr("src", mealPicture);
@@ -186,7 +167,7 @@ $(function () {
 
         mealCardBodyDiv.append(mealTitleEl, mealParagraphEl, mealSourceEl);
         mealCardDiv.append(mealImage, mealCardBodyDiv);
-        $("#generatedPage").append(mealCardDiv);
+        // $("#generatedPage").append(mealCardDiv);
       })
       .catch((error) => console.error(error));
   }
@@ -206,4 +187,23 @@ $(function () {
     }
     localStorage.setItem("movieMealData", JSON.stringify(localStorageData));
   }
+
+  $("#selectionsSection").on("click", ".btn", function (e) {
+    e.preventDefault();
+    const categoryClicked = e.target.innerHTML;
+
+    switchToGeneratedPage();
+    pickMovie(categoryClicked);
+    pickMeal();
+
+    movieMealDiv.append(movieCardDiv, mealCardDiv);
+    $("#generatedPage").append(movieMealDiv, saveBtn);
+
+    saveBtn.on("click", function () {
+      $("#confirmSave").on("click", function () {
+        setLocalStorage();
+        $("#saveConfirmation").modal("toggle");
+      });
+    });
+  });
 });
