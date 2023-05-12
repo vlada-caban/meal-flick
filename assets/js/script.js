@@ -35,7 +35,7 @@ $(function () {
 
   const today = dayjs().format("MMMM D, YYYY");
 
-  //function to render data from local storage to the page
+  //function to render data from local storage to the homepage
   function renderFromStorage() {
     if (localStorageData !== null) {
       let movieTitleToRender;
@@ -75,13 +75,15 @@ $(function () {
     }
   }
 
-  renderFromStorage();
-
+  //event listener for clear history button to clear local storage
   $("#clearHistory").on("click", function (e) {
     e.preventDefault(e);
     localStorage.clear();
     location.reload();
   });
+
+  //calling the function to render history to the page on load
+  renderFromStorage();
 
   //function to clear everything from homepage and generate header of generated movie/meal page
   function switchToGeneratedPage(category) {
@@ -102,7 +104,7 @@ $(function () {
     $("#generatedPage").append(headerDiv);
   }
 
-  // function to fetch a movie
+  // function to fetch a movie based on category input from the user
   function pickMovie(categoryInput) {
     let selectedCategoryID = 0;
     movieCardDiv.text("");
@@ -146,8 +148,12 @@ $(function () {
           .addClass("card-text py-2")
           .text(movieOverview);
 
-        movieCardBodyDiv.append(movieTitleEl, movieOverviewEl);
-        movieCardDiv.append(posterImage, movieCardBodyDiv, regenerateMovieBtn);
+        movieCardBodyDiv.append(
+          movieTitleEl,
+          movieOverviewEl,
+          regenerateMovieBtn
+        );
+        movieCardDiv.append(posterImage, movieCardBodyDiv);
 
         regenerateMovieBtn.on("click", function () {
           pickMovie(categoryInput);
@@ -156,6 +162,7 @@ $(function () {
       .catch((error) => console.error(error));
   }
 
+  //function to fetch a random meal
   function pickMeal() {
     fetch("https://www.themealdb.com/api/json/v1/1/random.php")
       .then((response) => response.json())
@@ -195,6 +202,7 @@ $(function () {
       .catch((error) => console.error(error));
   }
 
+  //function to save movie, meal and date to the storage
   function setLocalStorage() {
     const mealFlickData = {
       movie: movieTitle,
@@ -211,10 +219,10 @@ $(function () {
     localStorage.setItem("movieMealData", JSON.stringify(localStorageData));
   }
 
+  //event listener for homepage when user selects category
   $("#selectionsSection").on("click", ".btn", function (e) {
     e.preventDefault();
     const categoryClicked = e.target.innerHTML;
-    //TODO: pass categoryClicked to generated page to render to the page
     switchToGeneratedPage(categoryClicked);
     pickMovie(categoryClicked);
     pickMeal();
@@ -232,6 +240,5 @@ $(function () {
         $("#saveConfirmation").modal("toggle");
       });
     });
-
   });
 });
