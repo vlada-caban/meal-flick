@@ -10,6 +10,16 @@ $(function () {
   let movieTitle;
   let localStorageData = JSON.parse(localStorage.getItem("movieMealData"));
 
+  const regenerateMealBtn = $("<button>")
+    .addClass("btn btn-secondary m-2")
+    .attr("id", "changeMeal")
+    .text("Change Meal");
+
+  const regenerateMovieBtn = $("<button>")
+    .addClass("btn btn-secondary m-2")
+    .attr("id", "changeMeal")
+    .text("Change Movie");
+
   const saveBtn = $("<button>")
     .addClass("btn btn-success m-2")
     .attr("id", "saveBtn")
@@ -22,11 +32,6 @@ $(function () {
     .addClass("btn btn-secondary")
     .text("Go Back")
     .attr("id", "goBack");
-
-  //TODO:add regenerate buttons
-  const regenerateBtn = $("<button>")
-    .addClass("btn btn-secondary m-2")
-    .text("Re-Generate");
 
   const today = dayjs().format("MMMM D, YYYY");
 
@@ -79,7 +84,7 @@ $(function () {
   });
 
   //function to clear everything from homepage and generate header of generated movie/meal page
-  function switchToGeneratedPage() {
+  function switchToGeneratedPage(category) {
     $("#welcomeTitle").addClass("hide-content");
     $("#selectionsSection").addClass("hide-content");
     $("#historySection").addClass("hide-content");
@@ -87,7 +92,9 @@ $(function () {
     const headerDiv = $("<div>").addClass("container");
 
     const generatedTitle = $("<h2>").text(
-      "Here are your Movie and Meal pick. Enjoy!"
+      "You selected: " +
+        category +
+        ". Here are your Movie and Meal pick. Enjoy!"
     );
     const todayEl = $("<p>").text("Today: " + today);
 
@@ -98,7 +105,7 @@ $(function () {
   // function to fetch a movie
   function pickMovie(categoryInput) {
     let selectedCategoryID = 0;
-
+    movieCardDiv.text("");
     if (categoryInput === "Romance") {
       selectedCategoryID = 10749; //id for category Romance
     } else if (categoryInput === "Fun") {
@@ -140,7 +147,11 @@ $(function () {
           .text(movieOverview);
 
         movieCardBodyDiv.append(movieTitleEl, movieOverviewEl);
-        movieCardDiv.append(posterImage, movieCardBodyDiv);
+        movieCardDiv.append(posterImage, movieCardBodyDiv, regenerateMovieBtn);
+
+        regenerateMovieBtn.on("click", function () {
+          pickMovie(categoryInput);
+        });
       })
       .catch((error) => console.error(error));
   }
@@ -149,6 +160,7 @@ $(function () {
     fetch("https://www.themealdb.com/api/json/v1/1/random.php")
       .then((response) => response.json())
       .then((data) => {
+        mealCardDiv.text("");
         const meal = data.meals[0];
         mealName = meal.strMeal;
         const mealPicture = meal.strMealThumb;
@@ -168,8 +180,17 @@ $(function () {
           .attr("target", "blank")
           .text(mealSource);
 
-        mealCardBodyDiv.append(mealTitleEl, mealParagraphEl, mealSourceEl);
+        mealCardBodyDiv.append(
+          mealTitleEl,
+          mealParagraphEl,
+          mealSourceEl,
+          regenerateMealBtn
+        );
         mealCardDiv.append(mealImage, mealCardBodyDiv);
+
+        regenerateMealBtn.on("click", function () {
+          pickMeal();
+        });
       })
       .catch((error) => console.error(error));
   }
@@ -193,8 +214,8 @@ $(function () {
   $("#selectionsSection").on("click", ".btn", function (e) {
     e.preventDefault();
     const categoryClicked = e.target.innerHTML;
-
-    switchToGeneratedPage();
+    //TODO: pass categoryClicked to generated page to render to the page
+    switchToGeneratedPage(categoryClicked);
     pickMovie(categoryClicked);
     pickMeal();
 
@@ -211,5 +232,6 @@ $(function () {
         $("#saveConfirmation").modal("toggle");
       });
     });
+
   });
 });
