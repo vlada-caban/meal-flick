@@ -1,16 +1,9 @@
-body {
-    font-family: 'Russo One';
-}
-
 .hide-content {
     display: none;
 }
 
-.show-content {
-    display: contents;
-}
-
 body {
+    font-family: 'Russo One';
     background-color: #bcb8b1; 
 }
 
@@ -55,7 +48,13 @@ a {
 
   .btn-primary {
     background-color: #463f3a;
+    border-color: #3d3733;
   }
+
+   .btn-primary:hover {
+       background-color: #857970;
+    border-color: #3d3733;
+   }
 
   .card-body {
     background-color: #eee4e1;
@@ -69,10 +68,18 @@ a {
      height: 35vh;
      max-width: 35vw;
     align-self: center;
+    padding-top:2%;
     }
 
 #saveBtn {
     background-color: #463f3a;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
     align-self: center;
+    border-color: #3d3733;
 }
+
+#saveBtn:hover {
+    background-color: #857970;
+        border-color: #3d3733;
+}
+

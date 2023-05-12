@@ -1,4 +1,3 @@
-//Vlada section
 $(function () {
   const apiKeyMovie = "de64b49a91aea6e33566a226b9f72713";
   const movieURL = "https://api.themoviedb.org/3/discover/movie?";
@@ -6,8 +5,6 @@ $(function () {
   const movieMealDiv = $("<div>").addClass("card-group");
   const movieCardDiv = $("<div>").addClass("card");
   const mealCardDiv = $("<div>").addClass("card");
-
-    // .attr("style", "width: 100rem;")
 
   let mealName;
   let movieTitle;
@@ -39,6 +36,11 @@ $(function () {
       const tableTh3 = $("<th>").attr("scope", "col").text("Meal");
       const tableBody = $("<tbody>");
 
+      const clearStorage = $("<button>")
+      .addClass("btn btn-secondary")
+      .text("Clear History")
+      .attr("id", "clearHistory");
+
       tableTr.append(tableTh1, tableTh2, tableTh3);
       tableHeader.append(tableTr);
       historyTable.append(tableHeader);
@@ -48,9 +50,6 @@ $(function () {
         mealToRender = localStorageData[i].meal;
         dateToRender = localStorageData[i].date;
 
-        // console.log(movieTitleToRender);
-        // console.log(mealToRender);
-        // console.log(dateToRender);
         let entryTr = $("<tr>");
         let entryTd1 = $("<td>").text(dateToRender);
         let entryTd2 = $("<td>").text(movieTitleToRender);
@@ -59,11 +58,17 @@ $(function () {
         tableBody.append(entryTr);
       }
       historyTable.append(tableBody);
-      $("#historySection").append(historyHeader, historyTable);
+      $("#historySection").append(historyHeader, historyTable, clearStorage);
     }
   }
 
   renderFromStorage();
+
+  $("#clearHistory").on("click", function (e) {
+    e.preventDefault(e);
+    localStorage.clear();
+    location.reload();
+  });
 
   //function to clear everything from homepage and generate header of generated movie/meal page
   function switchToGeneratedPage() {
@@ -135,12 +140,9 @@ $(function () {
         movieCardBodyDiv.append(movieTitleEl, movieOverviewEl);
         movieCardDiv.append(posterImage, movieCardBodyDiv);
 
-        // $("#generatedPage").append(movieCardDiv);
       })
       .catch((error) => console.error(error));
   }
-
-  //Saeeda section
 
   function pickMeal() {
     fetch("https://www.themealdb.com/api/json/v1/1/random.php")
@@ -166,8 +168,7 @@ $(function () {
           .text(mealSource);
 
         mealCardBodyDiv.append(mealTitleEl, mealParagraphEl, mealSourceEl);
-        mealCardDiv.append(mealImage, mealCardBodyDiv);
-        // $("#generatedPage").append(mealCardDiv);
+        mealCardDiv.append(mealImage, mealCardBodyDiv);        
       })
       .catch((error) => console.error(error));
   }
