@@ -3,7 +3,7 @@ $(function () {
   const apiKeyMovie = "de64b49a91aea6e33566a226b9f72713";
   const movieURL = "https://api.themoviedb.org/3/discover/movie?";
 
-  const movieMealDiv = $("<div>").addClass("card-group").attr("id", "movieMeal");
+  const movieMealDiv = $("<div>").addClass("card-group");
   const movieCardDiv = $("<div>").addClass("card");
   const mealCardDiv = $("<div>").addClass("card");
 
@@ -14,8 +14,7 @@ $(function () {
   let localStorageData = JSON.parse(localStorage.getItem("movieMealData"));
 
   const saveBtn = $("<button>")
-    .addClass("btn btn-success m-2")
-    .text("Save")
+    .addClass("btn btn-success m-2").attr("id", "saveBtn").text("Save")
     .attr("type", "button")
     .attr("data-bs-toggle", "modal")
     .attr("data-bs-target", "#saveConfirmation");
@@ -125,8 +124,8 @@ $(function () {
           "https://image.tmdb.org/t/p/original/" + moviePosterPath;
 
         const posterImage = $("<img>")
-          .addClass("card-img-top")
-          .attr("src", posterURL);
+          .addClass("card-img-ready")
+          .attr("src", posterURL).attr("id", "movieImg");
         const movieCardBodyDiv = $("<div>").addClass("card-body py-3");
         const movieTitleEl = $("<h4>").addClass("card-title").text(movieTitle);
         const movieOverviewEl = $("<p>")
@@ -153,8 +152,9 @@ $(function () {
         const mealSource = meal.strSource;
 
         const mealImage = $("<img>")
-          .addClass("card-img-top")
-          .attr("src", mealPicture);
+          .addClass("card-img-ready")
+          .attr("src", mealPicture)
+          .attr("id", "mealImg");
         const mealCardBodyDiv = $("<div>").addClass("card-body py-3");
         const mealTitleEl = $("<h4>").addClass("card-title").text(mealName);
         const mealParagraphEl = $("<p>").text(

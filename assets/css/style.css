@@ -25,12 +25,17 @@ p {
     font-size: 22px;
 }
 
+a {
+    text-align: center;
+}
+
 .card {
     margin: 10px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     border-radius: 15px;
     overflow: hidden;
     object-fit: cover;
+    background-color: #eee4e1;
   }
   
   .card-img-top {
@@ -60,6 +65,14 @@ p {
     background-color: #eee4e1;
   }
 
- #movieMeal {
-    height: 25%;
- }
+ .card-img-ready {
+     height: 35vh;
+     max-width: 35vw;
+    align-self: center;
+    }
+
+#saveBtn {
+    background-color: #463f3a;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+    align-self: center;
+}
