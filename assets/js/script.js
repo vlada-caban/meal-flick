@@ -11,11 +11,19 @@ $(function () {
   let localStorageData = JSON.parse(localStorage.getItem("movieMealData"));
 
   const saveBtn = $("<button>")
-    .addClass("btn btn-success m-2").attr("id", "saveBtn").text("Save")
+    .addClass("btn btn-success m-2")
+    .attr("id", "saveBtn")
+    .text("Save")
     .attr("type", "button")
     .attr("data-bs-toggle", "modal")
     .attr("data-bs-target", "#saveConfirmation");
 
+  const goBackBtn = $("<button>")
+    .addClass("btn btn-secondary")
+    .text("Go Back")
+    .attr("id", "goBack");
+
+  //TODO:add regenerate buttons
   const regenerateBtn = $("<button>")
     .addClass("btn btn-secondary m-2")
     .text("Re-Generate");
@@ -37,9 +45,9 @@ $(function () {
       const tableBody = $("<tbody>");
 
       const clearStorage = $("<button>")
-      .addClass("btn btn-secondary")
-      .text("Clear History")
-      .attr("id", "clearHistory");
+        .addClass("btn btn-secondary")
+        .text("Clear History")
+        .attr("id", "clearHistory");
 
       tableTr.append(tableTh1, tableTh2, tableTh3);
       tableHeader.append(tableTr);
@@ -77,21 +85,14 @@ $(function () {
     $("#historySection").addClass("hide-content");
 
     const headerDiv = $("<div>").addClass("container");
-    const goBackBtn = $("<button>")
-      .addClass("btn btn-secondary")
-      .text("Go Back")
-      .attr("id", "goBack");
+
     const generatedTitle = $("<h2>").text(
       "Here are your Movie and Meal pick. Enjoy!"
     );
     const todayEl = $("<p>").text("Today: " + today);
 
-    headerDiv.append(goBackBtn, generatedTitle, todayEl);
+    headerDiv.append(generatedTitle, todayEl);
     $("#generatedPage").append(headerDiv);
-
-    goBackBtn.on("click", function () {
-      location.reload();
-    });
   }
 
   // function to fetch a movie
@@ -130,7 +131,8 @@ $(function () {
 
         const posterImage = $("<img>")
           .addClass("card-img-ready")
-          .attr("src", posterURL).attr("id", "movieImg");
+          .attr("src", posterURL)
+          .attr("id", "movieImg");
         const movieCardBodyDiv = $("<div>").addClass("card-body py-3");
         const movieTitleEl = $("<h4>").addClass("card-title").text(movieTitle);
         const movieOverviewEl = $("<p>")
@@ -139,7 +141,6 @@ $(function () {
 
         movieCardBodyDiv.append(movieTitleEl, movieOverviewEl);
         movieCardDiv.append(posterImage, movieCardBodyDiv);
-
       })
       .catch((error) => console.error(error));
   }
@@ -168,7 +169,7 @@ $(function () {
           .text(mealSource);
 
         mealCardBodyDiv.append(mealTitleEl, mealParagraphEl, mealSourceEl);
-        mealCardDiv.append(mealImage, mealCardBodyDiv);        
+        mealCardDiv.append(mealImage, mealCardBodyDiv);
       })
       .catch((error) => console.error(error));
   }
@@ -198,7 +199,11 @@ $(function () {
     pickMeal();
 
     movieMealDiv.append(movieCardDiv, mealCardDiv);
-    $("#generatedPage").append(movieMealDiv, saveBtn);
+    $("#generatedPage").append(movieMealDiv, goBackBtn, saveBtn);
+
+    goBackBtn.on("click", function () {
+      location.reload();
+    });
 
     saveBtn.on("click", function () {
       $("#confirmSave").on("click", function () {
