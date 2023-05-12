@@ -1,4 +1,3 @@
-//Vlada section
 $(function () {
   const apiKeyMovie = "de64b49a91aea6e33566a226b9f72713";
   const movieURL = "https://api.themoviedb.org/3/discover/movie?";
@@ -7,25 +6,36 @@ $(function () {
   const movieCardDiv = $("<div>").addClass("card");
   const mealCardDiv = $("<div>").addClass("card");
 
-    // .attr("style", "width: 100rem;")
-
   let mealName;
   let movieTitle;
   let localStorageData = JSON.parse(localStorage.getItem("movieMealData"));
 
+  const regenerateMealBtn = $("<button>")
+    .addClass("btn btn-secondary m-2")
+    .attr("id", "changeMeal")
+    .text("Change Meal");
+
+  const regenerateMovieBtn = $("<button>")
+    .addClass("btn btn-secondary m-2")
+    .attr("id", "changeMeal")
+    .text("Change Movie");
+
   const saveBtn = $("<button>")
-    .addClass("btn btn-success m-2").attr("id", "saveBtn").text("Save")
+    .addClass("btn btn-success m-2")
+    .attr("id", "saveBtn")
+    .text("Save")
     .attr("type", "button")
     .attr("data-bs-toggle", "modal")
     .attr("data-bs-target", "#saveConfirmation");
 
-  const regenerateBtn = $("<button>")
-    .addClass("btn btn-secondary m-2")
-    .text("Re-Generate");
+  const goBackBtn = $("<button>")
+    .addClass("btn btn-secondary")
+    .text("Go Back")
+    .attr("id", "goBack");
 
   const today = dayjs().format("MMMM D, YYYY");
 
-  //function to render data from local storage to the page
+  //function to render data from local storage to the homepage
   function renderFromStorage() {
     if (localStorageData !== null) {
       let movieTitleToRender;
@@ -39,6 +49,11 @@ $(function () {
       const tableTh3 = $("<th>").attr("scope", "col").text("Meal");
       const tableBody = $("<tbody>");
 
+      const clearStorage = $("<button>")
+        .addClass("btn btn-secondary")
+        .text("Clear History")
+        .attr("id", "clearHistory");
+
       tableTr.append(tableTh1, tableTh2, tableTh3);
       tableHeader.append(tableTr);
       historyTable.append(tableHeader);
@@ -48,9 +63,6 @@ $(function () {
         mealToRender = localStorageData[i].meal;
         dateToRender = localStorageData[i].date;
 
-        // console.log(movieTitleToRender);
-        // console.log(mealToRender);
-        // console.log(dateToRender);
         let entryTr = $("<tr>");
         let entryTd1 = $("<td>").text(dateToRender);
         let entryTd2 = $("<td>").text(movieTitleToRender);
@@ -59,40 +71,43 @@ $(function () {
         tableBody.append(entryTr);
       }
       historyTable.append(tableBody);
-      $("#historySection").append(historyHeader, historyTable);
+      $("#historySection").append(historyHeader, historyTable, clearStorage);
     }
   }
 
+  //event listener for clear history button to clear local storage
+  $("#clearHistory").on("click", function (e) {
+    e.preventDefault(e);
+    localStorage.clear();
+    location.reload();
+  });
+
+  //calling the function to render history to the page on load
   renderFromStorage();
 
   //function to clear everything from homepage and generate header of generated movie/meal page
-  function switchToGeneratedPage() {
+  function switchToGeneratedPage(category) {
     $("#welcomeTitle").addClass("hide-content");
     $("#selectionsSection").addClass("hide-content");
     $("#historySection").addClass("hide-content");
 
     const headerDiv = $("<div>").addClass("container");
-    const goBackBtn = $("<button>")
-      .addClass("btn btn-secondary")
-      .text("Go Back")
-      .attr("id", "goBack");
+
     const generatedTitle = $("<h2>").text(
-      "Here are your Movie and Meal pick. Enjoy!"
+      "You selected: " +
+        category +
+        ". Here are your Movie and Meal pick. Enjoy!"
     );
     const todayEl = $("<p>").text("Today: " + today);
 
-    headerDiv.append(goBackBtn, generatedTitle, todayEl);
+    headerDiv.append(generatedTitle, todayEl);
     $("#generatedPage").append(headerDiv);
-
-    goBackBtn.on("click", function () {
-      location.reload();
-    });
   }
 
-  // function to fetch a movie
+  // function to fetch a movie based on category input from the user
   function pickMovie(categoryInput) {
     let selectedCategoryID = 0;
-
+    movieCardDiv.text("");
     if (categoryInput === "Romance") {
       selectedCategoryID = 10749; //id for category Romance
     } else if (categoryInput === "Fun") {
@@ -125,27 +140,34 @@ $(function () {
 
         const posterImage = $("<img>")
           .addClass("card-img-ready")
-          .attr("src", posterURL).attr("id", "movieImg");
+          .attr("src", posterURL)
+          .attr("id", "movieImg");
         const movieCardBodyDiv = $("<div>").addClass("card-body py-3");
         const movieTitleEl = $("<h4>").addClass("card-title").text(movieTitle);
         const movieOverviewEl = $("<p>")
           .addClass("card-text py-2")
           .text(movieOverview);
 
-        movieCardBodyDiv.append(movieTitleEl, movieOverviewEl);
+        movieCardBodyDiv.append(
+          movieTitleEl,
+          movieOverviewEl,
+          regenerateMovieBtn
+        );
         movieCardDiv.append(posterImage, movieCardBodyDiv);
 
-        // $("#generatedPage").append(movieCardDiv);
+        regenerateMovieBtn.on("click", function () {
+          pickMovie(categoryInput);
+        });
       })
       .catch((error) => console.error(error));
   }
 
-  //Saeeda section
-
+  //function to fetch a random meal
   function pickMeal() {
     fetch("https://www.themealdb.com/api/json/v1/1/random.php")
       .then((response) => response.json())
       .then((data) => {
+        mealCardDiv.text("");
         const meal = data.meals[0];
         mealName = meal.strMeal;
         const mealPicture = meal.strMealThumb;
@@ -165,13 +187,22 @@ $(function () {
           .attr("target", "blank")
           .text(mealSource);
 
-        mealCardBodyDiv.append(mealTitleEl, mealParagraphEl, mealSourceEl);
+        mealCardBodyDiv.append(
+          mealTitleEl,
+          mealParagraphEl,
+          mealSourceEl,
+          regenerateMealBtn
+        );
         mealCardDiv.append(mealImage, mealCardBodyDiv);
-        // $("#generatedPage").append(mealCardDiv);
+
+        regenerateMealBtn.on("click", function () {
+          pickMeal();
+        });
       })
       .catch((error) => console.error(error));
   }
 
+  //function to save movie, meal and date to the storage
   function setLocalStorage() {
     const mealFlickData = {
       movie: movieTitle,
@@ -188,16 +219,20 @@ $(function () {
     localStorage.setItem("movieMealData", JSON.stringify(localStorageData));
   }
 
+  //event listener for homepage when user selects category
   $("#selectionsSection").on("click", ".btn", function (e) {
     e.preventDefault();
     const categoryClicked = e.target.innerHTML;
-
-    switchToGeneratedPage();
+    switchToGeneratedPage(categoryClicked);
     pickMovie(categoryClicked);
     pickMeal();
 
     movieMealDiv.append(movieCardDiv, mealCardDiv);
-    $("#generatedPage").append(movieMealDiv, saveBtn);
+    $("#generatedPage").append(movieMealDiv, goBackBtn, saveBtn);
+
+    goBackBtn.on("click", function () {
+      location.reload();
+    });
 
     saveBtn.on("click", function () {
       $("#confirmSave").on("click", function () {
