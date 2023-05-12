@@ -14,7 +14,7 @@ body {
     background-color: #bcb8b1; 
 }
 
-h1, h2 {
+h1, h2, h4 {
     text-align: center;
     color: #463f3a;
 }
@@ -59,3 +59,7 @@ p {
   .card-footer {
     background-color: #eee4e1;
   }
+
+ #movieMeal {
+    height: 25%;
+ }
