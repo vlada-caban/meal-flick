@@ -150,33 +150,17 @@ let urlForMovie;
           .text(movieOverview);
 
         //getting movie ID to see details for the movie
-        // movieID = dataMovie.results[randomMovieIndex].id;
-        // console.log(movieID);
-        // const detailsURL =
-        //   "https://api.themoviedb.org/3/movie/" +
-        //   movieID +
-        //   "/watch/providers?api_key=" +
-        //   apiKeyMovie;
+        movieID = dataMovie.results[randomMovieIndex].id;
+        console.log(movieID);
+const detailsURL = "https://www.themoviedb.org/movie/"+movieID;
+console.log(detailsURL);
 
-        // fetch(detailsURL)
-        //   .then((responseMovieDet) => responseMovieDet.json())
-        //   .then((dataMovieDet) => {
-        //     console.log(dataMovieDet);
-        //     urlForMovie = dataMovieDet.results.US.link;
-        //     console.log(urlForMovie);
-        //   })
-        //   .catch((error) => console.error(error));
+ const movieSourceEl = $("<a>")
+   .attr("href", detailsURL)
+   .attr("target", "blank")
+   .text(detailsURL);
 
-        // const movieLink = $("<a>")
-        //   .attr("href", urlForMovie)
-        //   .attr("target", "blank")
-        //   .text(urlForMovie);
-          
-        movieCardBodyDiv.append(
-          movieTitleEl,
-          movieOverviewEl,
-          regenerateMovieBtn
-        );
+  movieCardBodyDiv.append(movieTitleEl, movieOverviewEl, movieSourceEl, regenerateMovieBtn);
         movieCardDiv.append(posterImage, movieCardBodyDiv);
 
         regenerateMovieBtn.on("click", function () {
