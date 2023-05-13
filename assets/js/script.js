@@ -6,9 +6,13 @@ $(function () {
   const movieCardDiv = $("<div>").addClass("card");
   const mealCardDiv = $("<div>").addClass("card");
   let movieID;
-let urlForMovie;
+
   let mealName;
+  let mealSource;
+
   let movieTitle;
+  let detailsURL;
+
   let localStorageData = JSON.parse(localStorage.getItem("movieMealData"));
 
   const regenerateMealBtn = $("<button>")
@@ -68,13 +72,39 @@ let urlForMovie;
 
       for (let i = 0; i < localStorageData.length; i++) {
         movieTitleToRender = localStorageData[i].movie;
+        movieLinkToRender = localStorageData[i].movieLink;
         mealToRender = localStorageData[i].meal;
+        mealLinkToRender = localStorageData[i].mealLink;
         dateToRender = localStorageData[i].date;
 
         let entryTr = $("<tr>");
         let entryTd1 = $("<td>").text(dateToRender);
-        let entryTd2 = $("<td>").text(movieTitleToRender);
-        let entryTd3 = $("<td>").text(mealToRender);
+
+        //movie to render
+        let entryTd2 = $("<td>");
+        if (movieLinkToRender === "") {
+          entryTd2.text(movieTitleToRender);
+        } else {
+          let entryMovieLinkEl = $("<a>")
+            .attr("href", movieLinkToRender)
+            .attr("target", "blank")
+            .text(movieTitleToRender);
+          entryTd2.append(entryMovieLinkEl);
+        }
+
+        //meal to render
+        let entryTd3 = $("<td>");
+
+        if (mealLinkToRender === "") {
+          entryTd3.text(mealToRender);
+        } else {
+          let entryMealLinkEl = $("<a>")
+            .attr("href", mealLinkToRender)
+            .attr("target", "blank")
+            .text(mealToRender);
+          entryTd3.append(entryMealLinkEl);
+        }
+
         entryTr.append(entryTd1, entryTd2, entryTd3);
         tableBody.append(entryTr);
       }
@@ -152,15 +182,20 @@ let urlForMovie;
         //getting movie ID to see details for the movie
         movieID = dataMovie.results[randomMovieIndex].id;
         console.log(movieID);
-const detailsURL = "https://www.themoviedb.org/movie/"+movieID;
-console.log(detailsURL);
+        detailsURL = "https://www.themoviedb.org/movie/" + movieID;
+        console.log(detailsURL);
 
- const movieSourceEl = $("<a>")
-   .attr("href", detailsURL)
-   .attr("target", "blank")
-   .text(detailsURL);
+        const movieSourceEl = $("<a>")
+          .attr("href", detailsURL)
+          .attr("target", "blank")
+          .text(detailsURL);
 
-  movieCardBodyDiv.append(movieTitleEl, movieOverviewEl, movieSourceEl, regenerateMovieBtn);
+        movieCardBodyDiv.append(
+          movieTitleEl,
+          movieOverviewEl,
+          movieSourceEl,
+          regenerateMovieBtn
+        );
         movieCardDiv.append(posterImage, movieCardBodyDiv);
 
         regenerateMovieBtn.on("click", function () {
@@ -179,7 +214,7 @@ console.log(detailsURL);
         const meal = data.meals[0];
         mealName = meal.strMeal;
         const mealPicture = meal.strMealThumb;
-        const mealSource = meal.strSource;
+        mealSource = meal.strSource;
 
         const mealImage = $("<img>")
           .addClass("card-img-ready")
@@ -214,7 +249,9 @@ console.log(detailsURL);
   function setLocalStorage() {
     const mealFlickData = {
       movie: movieTitle,
+      movieLink: detailsURL,
       meal: mealName,
+      mealLink: mealSource,
       date: today,
     };
 
