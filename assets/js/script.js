@@ -280,8 +280,9 @@ $(function () {
     });
 
     saveBtn.on("click", function () {
+      setLocalStorage();
+
       $("#confirmSave").on("click", function () {
-        setLocalStorage();
         $("#saveConfirmation").modal("toggle");
       });
     });
