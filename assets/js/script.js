@@ -218,7 +218,7 @@ $(function () {
         const mealPicture = meal.strMealThumb;
         mealSource = meal.strSource;
         const mealCategory = meal.strCategory;
-
+console.log(data);
         const mealImage = $("<img>")
           .addClass("card-img-ready")
           .attr("src", mealPicture)
@@ -229,13 +229,13 @@ $(function () {
         const mealTitleEl = $("<h4>").addClass("card-title").text(mealName);
 
         const mealParagraphEl = $("<p>").text("Category: " + mealCategory);
-
-        if (mealSource !== "") {
+console.log(mealSource);
+        if (mealSource !== "" && mealSource !== null) {
           const sourceMoviePEl = $("<p>");
           const mealSourceEl = $("<a>")
             .attr("href", mealSource)
             .attr("target", "blank")
-            .text("See full recipe");
+            .text("See full recipe"); 
           sourceMoviePEl.append(mealSourceEl);
           mealCardBodyDiv.append(
             mealTitleEl, 

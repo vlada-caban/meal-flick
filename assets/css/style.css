@@ -100,6 +100,7 @@ a {
 }
 
 .card-img-ready {
+    padding-top: 2%;
     max-height: 300px;
     align-self:center;
 }
