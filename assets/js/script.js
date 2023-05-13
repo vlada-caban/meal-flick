@@ -16,13 +16,13 @@ $(function () {
   let localStorageData = JSON.parse(localStorage.getItem("movieMealData"));
 
   const regenerateMealBtn = $("<button>")
-    .addClass("btn btn-secondary m-2")
+    .addClass("btn btn-secondary mx-auto")
     .attr("id", "changeMeal")
     .text("Change Meal");
 
   const regenerateMovieBtn = $("<button>")
-    .addClass("btn btn-secondary m-2")
-    .attr("id", "changeMeal")
+    .addClass("btn btn-secondary mx-auto")
+    .attr("id", "changeMovie")
     .text("Change Movie");
 
   const saveBtn = $("<button>")
@@ -173,7 +173,9 @@ $(function () {
           .addClass("card-img-ready")
           .attr("src", posterURL)
           .attr("id", "movieImg");
-        const movieCardBodyDiv = $("<div>").addClass("card-body py-3");
+        const movieCardBodyDiv = $("<div>").addClass(
+          "card-body py-3 d-flex justify-content-between flex-column"
+        );
         const movieTitleEl = $("<h4>").addClass("card-title").text(movieTitle);
         const movieOverviewEl = $("<p>")
           .addClass("card-text py-2")
@@ -184,16 +186,16 @@ $(function () {
         console.log(movieID);
         detailsURL = "https://www.themoviedb.org/movie/" + movieID;
         console.log(detailsURL);
-
+        const sourcePEl = $("<p>");
         const movieSourceEl = $("<a>")
           .attr("href", detailsURL)
           .attr("target", "blank")
-          .text(detailsURL);
-
+          .text("See movie details");
+        sourcePEl.append(movieSourceEl);
         movieCardBodyDiv.append(
           movieTitleEl,
           movieOverviewEl,
-          movieSourceEl,
+          sourcePEl,
           regenerateMovieBtn
         );
         movieCardDiv.append(posterImage, movieCardBodyDiv);
@@ -215,27 +217,40 @@ $(function () {
         mealName = meal.strMeal;
         const mealPicture = meal.strMealThumb;
         mealSource = meal.strSource;
+        const mealCategory = meal.strCategory;
 
         const mealImage = $("<img>")
           .addClass("card-img-ready")
           .attr("src", mealPicture)
           .attr("id", "mealImg");
-        const mealCardBodyDiv = $("<div>").addClass("card-body py-3");
+        const mealCardBodyDiv = $("<div>").addClass(
+          "card-body py-3 d-flex justify-content-between flex-column"
+        );
         const mealTitleEl = $("<h4>").addClass("card-title").text(mealName);
-        const mealParagraphEl = $("<p>").text(
-          "Follow the link for full recipe:"
-        );
-        const mealSourceEl = $("<a>")
-          .attr("href", mealSource)
-          .attr("target", "blank")
-          .text(mealSource);
 
-        mealCardBodyDiv.append(
-          mealTitleEl,
-          mealParagraphEl,
-          mealSourceEl,
-          regenerateMealBtn
-        );
+        const mealParagraphEl = $("<p>").text("Category: " + mealCategory);
+
+        if (mealSource !== "") {
+          const sourceMoviePEl = $("<p>");
+          const mealSourceEl = $("<a>")
+            .attr("href", mealSource)
+            .attr("target", "blank")
+            .text("See full recipe");
+          sourceMoviePEl.append(mealSourceEl);
+          mealCardBodyDiv.append(
+            mealTitleEl, 
+            mealParagraphEl,
+            sourceMoviePEl,
+            regenerateMealBtn
+          );
+        } else {
+          mealCardBodyDiv.append(
+            mealTitleEl,
+            mealParagraphEl,
+            regenerateMealBtn
+          );
+        }
+
         mealCardDiv.append(mealImage, mealCardBodyDiv);
 
         regenerateMealBtn.on("click", function () {

@@ -62,6 +62,7 @@ a {
     overflow: hidden;
     object-fit: cover;
     background-color: #eee4e1;
+    text-align: center;
 }
 
 .card-img-top {
@@ -99,10 +100,8 @@ a {
 }
 
 .card-img-ready {
-    height: 35vh;
-    max-width: 35vw;
-    align-self: center;
-    padding-top: 2%;
+    max-height: 300px;
+    align-self:center;
 }
 
 #saveBtn {
