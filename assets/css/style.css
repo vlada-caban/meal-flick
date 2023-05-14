@@ -17,7 +17,11 @@
 
 body {
     font-family: 'Russo One';
-    background-color: #dad5cd; 
+    /* background-color: #dad5cd;  */
+    background-image: url("../images/mealflick_wallpaper.png");
+    background-repeat: repeat;
+    background-size: 355px 319px;
+  
 }
 
 h1, h2, h4 {

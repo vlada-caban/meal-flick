@@ -5,7 +5,8 @@ $(function () {
   const movieMealDiv = $("<div>").addClass("card-group");
   const movieCardDiv = $("<div>").addClass("card");
   const mealCardDiv = $("<div>").addClass("card");
-
+  let movieID;
+let urlForMovie;
   let mealName;
   let movieTitle;
   let localStorageData = JSON.parse(localStorage.getItem("movieMealData"));
@@ -33,7 +34,19 @@ $(function () {
     .text("Go Back")
     .attr("id", "goBack");
 
+  const clearStorage = $("<button>")
+    .addClass("btn btn-secondary")
+    .text("Clear History")
+    .attr("id", "clearHistory");
+
   const today = dayjs().format("MMMM D, YYYY");
+
+  //event listener for clear history button to clear local storage
+  clearStorage.on("click", function (e) {
+    e.preventDefault(e);
+    localStorage.clear();
+    location.reload();
+  });
 
   //function to render data from local storage to the homepage
   function renderFromStorage() {
@@ -48,11 +61,6 @@ $(function () {
       const tableTh2 = $("<th>").attr("scope", "col").text("Movie");
       const tableTh3 = $("<th>").attr("scope", "col").text("Meal");
       const tableBody = $("<tbody>");
-
-      const clearStorage = $("<button>")
-        .addClass("btn btn-secondary")
-        .text("Clear History")
-        .attr("id", "clearHistory");
 
       tableTr.append(tableTh1, tableTh2, tableTh3);
       tableHeader.append(tableTr);
@@ -74,13 +82,6 @@ $(function () {
       $("#historySection").append(historyHeader, historyTable, clearStorage);
     }
   }
-
-  //event listener for clear history button to clear local storage
-  $("#clearHistory").on("click", function (e) {
-    e.preventDefault(e);
-    localStorage.clear();
-    location.reload();
-  });
 
   //calling the function to render history to the page on load
   renderFromStorage();
@@ -148,11 +149,18 @@ $(function () {
           .addClass("card-text py-2")
           .text(movieOverview);
 
-        movieCardBodyDiv.append(
-          movieTitleEl,
-          movieOverviewEl,
-          regenerateMovieBtn
-        );
+        //getting movie ID to see details for the movie
+        movieID = dataMovie.results[randomMovieIndex].id;
+        console.log(movieID);
+const detailsURL = "https://www.themoviedb.org/movie/"+movieID;
+console.log(detailsURL);
+
+ const movieSourceEl = $("<a>")
+   .attr("href", detailsURL)
+   .attr("target", "blank")
+   .text(detailsURL);
+
+  movieCardBodyDiv.append(movieTitleEl, movieOverviewEl, movieSourceEl, regenerateMovieBtn);
         movieCardDiv.append(posterImage, movieCardBodyDiv);
 
         regenerateMovieBtn.on("click", function () {
