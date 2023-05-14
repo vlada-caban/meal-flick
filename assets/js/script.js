@@ -94,7 +94,6 @@ $(function () {
 
         //meal to render
         let entryTd3 = $("<td>");
-
         if (mealLinkToRender === "") {
           entryTd3.text(mealToRender);
         } else {
@@ -113,7 +112,7 @@ $(function () {
     }
   }
 
-  //calling the function to render history to the page on load
+  //calling the function to render history to the homepage page on load
   renderFromStorage();
 
   //function to clear everything from homepage and generate header of generated movie/meal page
@@ -216,9 +215,15 @@ $(function () {
         const meal = data.meals[0];
         mealName = meal.strMeal;
         const mealPicture = meal.strMealThumb;
-        mealSource = meal.strSource;
         const mealCategory = meal.strCategory;
-console.log(data);
+        const mealArea = meal.strArea;
+        mealSource = meal.strSource;
+
+        //checking if meal source is blank to regenerate meal that has source
+        if (mealSource === "" || mealSource === null) {
+          pickMeal();
+        }
+
         const mealImage = $("<img>")
           .addClass("card-img-ready")
           .attr("src", mealPicture)
@@ -228,28 +233,24 @@ console.log(data);
         );
         const mealTitleEl = $("<h4>").addClass("card-title").text(mealName);
 
-        const mealParagraphEl = $("<p>").text("Category: " + mealCategory);
-console.log(mealSource);
-        if (mealSource !== "" && mealSource !== null) {
-          const sourceMoviePEl = $("<p>");
-          const mealSourceEl = $("<a>")
-            .attr("href", mealSource)
-            .attr("target", "blank")
-            .text("See full recipe"); 
-          sourceMoviePEl.append(mealSourceEl);
-          mealCardBodyDiv.append(
-            mealTitleEl, 
-            mealParagraphEl,
-            sourceMoviePEl,
-            regenerateMealBtn
-          );
-        } else {
-          mealCardBodyDiv.append(
-            mealTitleEl,
-            mealParagraphEl,
-            regenerateMealBtn
-          );
-        }
+        const mealCategoryEl = $("<p>").text("Category: " + mealCategory);
+
+        const mealAreaEl = $("<p>").text("Area: " + mealArea);
+
+        const sourceMoviePEl = $("<p>");
+        const mealSourceEl = $("<a>")
+          .attr("href", mealSource)
+          .attr("target", "blank")
+          .text("See full recipe");
+        sourceMoviePEl.append(mealSourceEl);
+
+        mealCardBodyDiv.append(
+          mealTitleEl,
+          mealCategoryEl,
+          mealAreaEl,
+          sourceMoviePEl,
+          regenerateMealBtn
+        );
 
         mealCardDiv.append(mealImage, mealCardBodyDiv);
 
